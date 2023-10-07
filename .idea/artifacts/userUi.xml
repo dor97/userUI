@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="userUi">
+    <output-path>$PROJECT_DIR$/out/artifacts/userUi</output-path>
+    <root id="archive" name="userUi.jar">
+      <element id="file-copy" path="$PROJECT_DIR$/../client/out/artifacts/client/client.jar" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/../DTOs/out/artifacts/DTOs/DTOs.jar" />
+    </root>
+  </artifact>
+</component>

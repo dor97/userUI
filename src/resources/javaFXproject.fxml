@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="App.AppController">
+   <top>
+      <HBox fx:id="mainHbox" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button id="loadButton" fx:id="loadFileButton" mnemonicParsing="false" onAction="#loadFile" text="Load File" />
+            <TextField fx:id="loadedFilePathTextBox" promptText="Currently Loaded File Path" HBox.hgrow="ALWAYS" />
+            <Button id="hotStyle" fx:id="hotStyleButton" mnemonicParsing="false" onAction="#changeStyleHot" text="Hot Style" />
+            <Button id="coldStyle" fx:id="coldStyleButton" mnemonicParsing="false" onAction="#changeStyleCold" text="Cold Style" />
+            <Button id="defaultStyleButton" fx:id="defaultStyleButton" mnemonicParsing="false" onAction="#changeToDefaultStyle" text="Default Style" />
+            <TableView fx:id="queueManagementTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0">
+              <columns>
+                <TableColumn id="column" fx:id="statusColumn" prefWidth="169.33336889743805" text="Status" />
+                <TableColumn id="column" fx:id="amountColumn" prefWidth="168.66664123535156" text="Amount" />
+              </columns>
+            </TableView>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="15.0" top="8.0" />
+         </padding>
+      </HBox>
+   </top>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <center>
+       <TabPane fx:id="tabPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab fx:id="DetailsTab" text="Details">
+               <content>
+                  <BorderPane fx:id="detailsBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                    <center>
+                        <fx:include fx:id="treeViewComponent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" source="../TreeView/TreeView.fxml" BorderPane.alignment="TOP_LEFT" />
+                    </center>
+                  </BorderPane>
+               </content>
+            </Tab>
+            <Tab text="requests">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <ChoiceBox fx:id="simulationNameChoiceBox" prefWidth="150.0" />
+                                    <TextField fx:id="amountToRunfiled" onAction="#amountToRun" />
+                                    <TextField fx:id="tickfiled" onAction="#tick" />
+                                    <TextField fx:id="secfield" onAction="#sec" />
+                                    <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitRequest" text="submit">
+                                       <HBox.margin>
+                                          <Insets left="30.0" top="30.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <TableView fx:id="requestTable" prefHeight="254.0" prefWidth="318.0">
+                                <columns>
+                                  <TableColumn fx:id="requestIdColumn" prefWidth="75.0" text="requestId" />
+                                  <TableColumn fx:id="simulationNameColumn" prefWidth="118.39999389648438" text="simulationName" />
+                                    <TableColumn fx:id="amountToRunColumn" prefWidth="104.79997253417969" text="amount" />
+                                    <TableColumn fx:id="requestStatusColumn" minWidth="2.4000244140625" prefWidth="108.800048828125" text="status" />
+                                    <TableColumn fx:id="currentlyRunningSimulationColumn" minWidth="6.4000244140625" prefWidth="127.199951171875" text="running" />
+                                    <TableColumn fx:id="doneRunningColumn" prefWidth="131.20001220703125" text="done" />
+                                </columns>
+                              </TableView>
+                              <Button fx:id="executeButton" mnemonicParsing="false" onAction="#executeSimulation" text="execute" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+          <Tab fx:id="newExecutionTab" text="New Execution">
+               <content>
+                  <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                     <bottom>
+                        <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button id="pause" fx:id="clearSimulationButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearSimulation" prefWidth="60.0" text="Clear">
+                                 <font>
+                                    <Font size="21.0" />
+                                 </font></Button>
+                              <Button fx:id="startSimulationButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#startSimulation" prefWidth="60.0" text="Start" />
+                           </children>
+                        </HBox>
+                     </bottom>
+                     <center>
+                        <HBox fx:id="tablesHbox" alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" spacing="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TableView fx:id="environmentVarTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="370.0">
+                                <columns>
+                                  <TableColumn id="column" fx:id="environmentVarColumn" minWidth="-Infinity" prefWidth="184.0000278353691" text="Environment Variable" />
+                                  <TableColumn id="column" fx:id="valueColumn" minWidth="-Infinity" prefWidth="186.3999481201172" text="Value" />
+                                </columns>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TableView>
+                              <TableView fx:id="entitiesTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="371.0">
+                                <columns>
+                                  <TableColumn id="column" fx:id="entityColumn" minWidth="-1.0" prefWidth="180.8000122308731" text="Entity" />
+                                  <TableColumn id="column" fx:id="populationColumn" minWidth="-Infinity" prefWidth="207.20001220703125" text="Population" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </HBox>
+                     </center>
+                  </BorderPane>
+               </content>
+          </Tab>
+            <Tab fx:id="resultsTab" text="Results">
+               <content>
+                  <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+                      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
+                      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
+                    </rowConstraints>
+                     <children>
+                        <ListView fx:id="executionListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                           <children>
+                              <TableView fx:id="entitiesRunTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="200.0">
+                                <columns>
+                                  <TableColumn id="column" fx:id="entityRunColumn" minWidth="-Infinity" prefWidth="93.59991455078125" text="Entity" />
+                                  <TableColumn id="column" fx:id="populationRunColumn" minWidth="-1.0" prefWidth="105.60003662109375" text="Population" />
+                                </columns>
+                              </TableView>
+                              <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" prefWidth="120.0" />
+                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" prefWidth="120.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" prefWidth="120.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" prefWidth="120.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" vgrow="ALWAYS" />
+                                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" vgrow="ALWAYS" />
+                                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" vgrow="ALWAYS" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="rerunButton" mnemonicParsing="false" onAction="#rerun" text="Rerun" />
+                                    <Label fx:id="ticksLabel" text="Ticks:" GridPane.rowIndex="2" />
+                                    <Label fx:id="ticksValueLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label fx:id="secondsLabel" text="Seconds:" GridPane.rowIndex="3" />
+                                    <Label fx:id="secondsValueLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Button id="pause" fx:id="stopSimulationButton" mnemonicParsing="false" onAction="#stopSimulation" text="Stop" GridPane.rowIndex="1" />
+                                    <Button fx:id="resumeSimulationButton" mnemonicParsing="false" onAction="#resumeSimulation" text="Resume" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </Button>
+                                    <Button id="pause" fx:id="pauseButton" mnemonicParsing="false" onAction="#pauseSimulation" text="Pause" GridPane.columnIndex="1" />
+                                    <Button id="ticksButton" fx:id="nextButton" mnemonicParsing="false" onAction="#nextSimulationStep" text="Next Tick" GridPane.columnIndex="2" />
+                                    <TextArea fx:id="exceptionArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+                                    <Label fx:id="exceptionLabel" text="Exceptions:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </HBox>
+                        <HBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                           <children>
+                              <TreeView fx:id="resultsTreeView" />
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button id="graphic" fx:id="resultsGraphButton" mnemonicParsing="false" onAction="#showGraph" text="Graph" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <Button id="graphic" fx:id="histogramButton" mnemonicParsing="false" onAction="#showHistogram" text="Histogram" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Label fx:id="consistencyLabel" text="Consistency:" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="consistencyValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label fx:id="averageLabel" text="Average:" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="averageValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Button fx:id="graphicDisplayButton" mnemonicParsing="false" onAction="#showGraphicDisplay" text="Graphic Diaplay" GridPane.columnIndex="1" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+   <cursor>
+      <Cursor fx:constant="H_RESIZE" />
+   </cursor>
+</BorderPane>
