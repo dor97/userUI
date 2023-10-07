@@ -19,15 +19,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../DTOs/out/artifacts/DTOs/DTOs.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../okclient/kotlin-stdlib-1.4.10.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -70,6 +61,15 @@
         <SOURCES>
           <root url="jar://$MODULE_DIR$/../gson/gson-2.8.8-sources.jar!/" />
         </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../DTO/out/artifacts/DTO/DTO.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
       </library>
     </orderEntry>
   </component>

@@ -17,7 +17,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
@@ -98,8 +100,13 @@ public class AppController implements Initializable {
     @FXML private TableColumn<requestTable, approvementStatus> requestStatusColumn;
     @FXML private TableColumn<requestTable, Integer> currentlyRunningSimulationColumn;
     @FXML private TableColumn<requestTable, Integer> doneRunningColumn;
+    @FXML private TableView<entityOriginalSimulationValuesTable> entityOriginValueTable;
+    @FXML private TableColumn<entityOriginalSimulationValuesTable, String> entityNameOriginColumn;
+    @FXML private TableColumn<entityOriginalSimulationValuesTable, Integer> populationOriginColumn;
 
 
+
+    private simulationValue originalSimulationValue;
     private Map<Integer, Integer> requestIdToIndex = new HashMap<>();
     private Stage primaryStage;
     private Stage graphicDisplayStage;
@@ -110,6 +117,7 @@ public class AppController implements Initializable {
     private ObservableList<ExecutionListItem> executionListViewData = FXCollections.observableArrayList();
     private ObservableList<QueueManagement> queueManagementData = FXCollections.observableArrayList();
     private ObservableList<requestTable> requestTablesData = FXCollections.observableArrayList();
+    private ObservableList<entityOriginalSimulationValuesTable> entityOriginValues = FXCollections.observableArrayList();
     private int simulationID;
     private myTask newTask = null;
     private Integer lastSimulationNum = 0;
@@ -128,11 +136,25 @@ public class AppController implements Initializable {
     private Integer amountToRun;
     private Integer ticks;
     private Integer sec;
+    private Map<Integer, List<entityOriginalSimulationValuesTable>> entityOriginalValuesMap = new HashMap<>();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         alert.setTitle("Error");
+//        FXMLLoader fxmlLoader = new FXMLLoader();
+//        URL mainFXML = getClass().getResource("/resources/simulationValue.fxml");
+//        fxmlLoader.setLocation(mainFXML);
+//        try {
+//            originalSimulationValue = fxmlLoader.getController();
+//            Parent root = fxmlLoader.load();
+//            Scene scene = new Scene(root);
+//            Stage stage = new Stage();
+//            stage.setScene(scene);
+//            stage.show();
+//        }catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
 
         rerunButton.setDisable(true);
         if (treeViewController != null && treeDetailsController != null) {
@@ -159,6 +181,10 @@ public class AppController implements Initializable {
         currentlyRunningSimulationColumn.setCellValueFactory(new PropertyValueFactory<>("currentlyRunningSimulation"));
         doneRunningColumn.setCellValueFactory(new PropertyValueFactory<>("doneRunning"));
 
+        entityNameOriginColumn.setCellValueFactory(new PropertyValueFactory<>("entity"));
+        populationOriginColumn.setCellValueFactory(new PropertyValueFactory<>("population"));
+
+        entityOriginValueTable.setItems(entityOriginValues);
         requestTable.setItems(requestTablesData);
         environmentVarTable.setItems(environmentVariableTableData);
         entitiesTable.setItems(entitiesTableData);
@@ -178,6 +204,18 @@ public class AppController implements Initializable {
 
 
         executionListView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+//            Platform.runLater(() -> {entityOriginValues.clear();
+//            entityOriginValues.addAll(entityOriginalValuesMap.get(newValue));
+//            entityOriginValueTable.refresh();});
+            entityOriginValues.clear();
+            //entityOriginValues.addAll(entityOriginalValuesMap.get(newValue));
+            List<entityOriginalSimulationValuesTable> list = entityOriginalValuesMap.get(newValue);
+            for(entityOriginalSimulationValuesTable values : entityOriginalValuesMap.get(newValue)){
+                entityOriginValues.add(values);
+            }
+            entityOriginValueTable.refresh();
+            //originalValuesList.clear();
+
             try {
                 if (newTask != null && communication.getSimulationStatus(lastSimulationNum).getSimulationStatus() == Status.RUNNING) {
                     stopGettingDataUsingTask(newTask);
@@ -260,8 +298,8 @@ public class AppController implements Initializable {
                 String selectedValue = selectedTreeItem.getValue();
                 lastChosenPropertyForHistogram = newValue.getValue();
                 lastChosenEntityForHistogram = newValue.getParent().getValue();
-                getConsistencyValue(newValue.getParent().getValue(), newValue.getValue());
-                getAverageValue(newValue.getParent().getValue(), newValue.getValue());
+                setConsistencyValue(newValue.getParent().getValue(), newValue.getValue());
+                setAverageValue(newValue.getParent().getValue(), newValue.getValue());
             }
             else if (newValue !=null && !newValue.getChildren().isEmpty()){
                 histogramButton.setDisable(true);
@@ -368,9 +406,10 @@ public class AppController implements Initializable {
 
     }
 
-    private void getAverageValue(String entity, String property) {
+    private void setAverageValue(String entity, String property) {
         try {
             if (!communication.getPostRunData(lastSimulationNum).getAvPropertyValue().containsKey(entity + "_" + property)) {
+                averageValueLabel.setText("");
                 return;
             }
             averageValueLabel.setText(communication.getPostRunData(lastSimulationNum).getAvPropertyValue().get(entity + "_" + property).getKey().toString());
@@ -384,9 +423,10 @@ public class AppController implements Initializable {
         fillResultsTreeView();
     }
 
-    private void getConsistencyValue(String entity, String property) {
+    private void setConsistencyValue(String entity, String property) {
         try {
             if (!communication.getPostRunData(lastSimulationNum).getPropertyChangeByTick().containsKey(entity + "_" + property)) {
+                consistencyValueLabel.setText("");
                 return;
             }
             Float sum = 0f;
@@ -593,9 +633,11 @@ public class AppController implements Initializable {
             }
             Map<String, String> environmentVariableMap = environmentVariableTableData.stream().collect(Collectors.toMap(environmentVariable -> environmentVariable.getEnvVarNameNoType(), environmentVariable -> environmentVariable.getValue().getText()));
             Map<String, Integer> entityMap = entitiesTableData.stream().collect(Collectors.toMap(entity -> entity.getEntityName(), entity -> Integer.parseInt(entity.getPopulation().getText())));
-            communication.prepareSimulation(requestId, communication.getUserName(), environmentVariableMap, entityMap);
+            DTOResultOfPrepareSimulation resultOfPrepareSimulation = communication.prepareSimulation(requestId, communication.getUserName(), environmentVariableMap, entityMap);
             DTOSimulationId simulationId = communication.startSimulation();
-            communication.setChosenSimulationId(simulationId.getSimulationId());
+            entityOriginalValuesMap.put(simulationId.getSimulationId(), entityMap.entrySet().stream().map(entry -> new entityOriginalSimulationValuesTable(entry.getKey(), entry.getValue())).collect(Collectors.toList()));
+
+            //communication.setChosenSimulationId(simulationId.getSimulationId());
             simulationID = simulationId.getSimulationId();
 //            engine.setSimulation();
 //            simulationID = engine.activeSimulation(new myTask());

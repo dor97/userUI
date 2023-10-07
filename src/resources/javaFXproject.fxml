@@ -156,6 +156,12 @@
                                   <TableColumn id="column" fx:id="populationRunColumn" minWidth="-1.0" prefWidth="105.60003662109375" text="Population" />
                                 </columns>
                               </TableView>
+                              <TableView fx:id="entityOriginValueTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="200.0">
+                                <columns>
+                                  <TableColumn fx:id="entityNameOriginColumn" prefWidth="83.20000916719437" text="Entity" />
+                                  <TableColumn fx:id="populationOriginColumn" prefWidth="115.99993896484375" text="population(start)" />
+                                </columns>
+                              </TableView>
                               <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" prefWidth="120.0" />
