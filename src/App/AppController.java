@@ -319,7 +319,6 @@ public class AppController implements Initializable {
             }
         }));
         simulationNameChoiceBox.setOnAction((ActionEvent event) -> simulationChosenName = simulationNameChoiceBox.getValue());
-        communication.setIsAdmin(true);
         try {
             communication.fetchDataFromServer();
         }catch (Exception e){
@@ -1101,6 +1100,9 @@ public class AppController implements Initializable {
     @FXML
     void executeSimulation(ActionEvent event) {
         requestTable data = requestTable.getSelectionModel().getSelectedItem();
+        if(data == null){
+            return;
+        }
         communication.setChosenSimulationName(data.getSimulationName());
         communication.setRequestIdChosen(data.getRequestId());
         try {
