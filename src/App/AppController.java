@@ -103,6 +103,9 @@ public class AppController implements Initializable {
     @FXML private TableView<entityOriginalSimulationValuesTable> entityOriginValueTable;
     @FXML private TableColumn<entityOriginalSimulationValuesTable, String> entityNameOriginColumn;
     @FXML private TableColumn<entityOriginalSimulationValuesTable, Integer> populationOriginColumn;
+    @FXML private TableView<environmentOriginalSimulationValuesTable> environmentOriginValueTable;
+    @FXML private TableColumn<environmentOriginalSimulationValuesTable, String> environmentOriginColumn;
+    @FXML private TableColumn<environmentOriginalSimulationValuesTable, String> valueOriginColumn;
 
 
 
@@ -118,6 +121,8 @@ public class AppController implements Initializable {
     private ObservableList<QueueManagement> queueManagementData = FXCollections.observableArrayList();
     private ObservableList<requestTable> requestTablesData = FXCollections.observableArrayList();
     private ObservableList<entityOriginalSimulationValuesTable> entityOriginValues = FXCollections.observableArrayList();
+    private ObservableList<environmentOriginalSimulationValuesTable> environmentOriginValues = FXCollections.observableArrayList();
+
     private int simulationID;
     private myTask newTask = null;
     private Integer lastSimulationNum = 0;
@@ -137,6 +142,8 @@ public class AppController implements Initializable {
     private Integer ticks;
     private Integer sec;
     private Map<Integer, List<entityOriginalSimulationValuesTable>> entityOriginalValuesMap = new HashMap<>();
+    private Map<Integer, List<environmentOriginalSimulationValuesTable>> environmentOriginalValuesMap = new HashMap<>();
+
 
 
     @Override
@@ -184,6 +191,10 @@ public class AppController implements Initializable {
         entityNameOriginColumn.setCellValueFactory(new PropertyValueFactory<>("entity"));
         populationOriginColumn.setCellValueFactory(new PropertyValueFactory<>("population"));
 
+        environmentOriginColumn.setCellValueFactory(new PropertyValueFactory<>("environment"));
+        valueOriginColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+
+        environmentOriginValueTable.setItems(environmentOriginValues);
         entityOriginValueTable.setItems(entityOriginValues);
         requestTable.setItems(requestTablesData);
         environmentVarTable.setItems(environmentVariableTableData);
@@ -204,17 +215,19 @@ public class AppController implements Initializable {
 
 
         executionListView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-//            Platform.runLater(() -> {entityOriginValues.clear();
-//            entityOriginValues.addAll(entityOriginalValuesMap.get(newValue));
-//            entityOriginValueTable.refresh();});
-            entityOriginValues.clear();
-            //entityOriginValues.addAll(entityOriginalValuesMap.get(newValue));
-            List<entityOriginalSimulationValuesTable> list = entityOriginalValuesMap.get(newValue);
-            for(entityOriginalSimulationValuesTable values : entityOriginalValuesMap.get(newValue)){
-                entityOriginValues.add(values);
+
+            if(entityOriginalValuesMap.containsKey(newValue.getID())) {
+                entityOriginValues.clear();
+                entityOriginValues.addAll(entityOriginalValuesMap.get(newValue.getID()));
+                entityOriginValueTable.refresh();
             }
-            entityOriginValueTable.refresh();
-            //originalValuesList.clear();
+
+            if (environmentOriginalValuesMap.containsKey(newValue.getID())){
+                environmentOriginValues.clear();
+                environmentOriginValues.addAll(environmentOriginalValuesMap.get(newValue.getID()));
+                environmentOriginValueTable.refresh();
+            }
+
 
             try {
                 if (newTask != null && communication.getSimulationStatus(lastSimulationNum).getSimulationStatus() == Status.RUNNING) {
@@ -636,6 +649,7 @@ public class AppController implements Initializable {
             DTOResultOfPrepareSimulation resultOfPrepareSimulation = communication.prepareSimulation(requestId, communication.getUserName(), environmentVariableMap, entityMap);
             DTOSimulationId simulationId = communication.startSimulation();
             entityOriginalValuesMap.put(simulationId.getSimulationId(), entityMap.entrySet().stream().map(entry -> new entityOriginalSimulationValuesTable(entry.getKey(), entry.getValue())).collect(Collectors.toList()));
+            environmentOriginalValuesMap.put(simulationId.getSimulationId(), resultOfPrepareSimulation.getEnvironmentVariablesValuesList().stream().map(DTOEnvironment -> new environmentOriginalSimulationValuesTable(DTOEnvironment.getName(), DTOEnvironment.getValue().toString())).collect(Collectors.toList()));
 
             //communication.setChosenSimulationId(simulationId.getSimulationId());
             simulationID = simulationId.getSimulationId();
