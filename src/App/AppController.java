@@ -660,20 +660,29 @@ public class AppController implements Initializable {
                 //engine.updateNewlyFinishedSimulationInLoop(executionListViewData);
                 Thread thread = new Thread(() -> {  while(true)
                 {List<Integer> ids = communication.getNewlyFinishedSimulation(communication.getPrevIndexForFinishedSimulation());
-                    ObservableList<ExecutionListItem> toRemove = FXCollections.observableArrayList();
+                    //ObservableList<ExecutionListItem> toRemove = FXCollections.observableArrayList();
                     for(Integer id : ids){
                         for(ExecutionListItem executionListItem : executionListViewData){
                             if(executionListItem.getID().equals(id)){
-                                toRemove.add(executionListItem);
+                                executionListItem.setToFinished();
                             }
                         }
                     }
+                    Platform.runLater(() -> executionListView.refresh());
 
-                    Platform.runLater(() -> {for(ExecutionListItem executionListItem : toRemove){//TODO make logic when simulation ended
-                        executionListViewData.remove(executionListItem);
-                        executionListViewData.add(new ExecutionListItem(executionListItem.getID(), true));
+//                    for(Integer id : ids){
+//                        for(ExecutionListItem executionListItem : executionListViewData){
+//                            if(executionListItem.getID().equals(id)){
+//                                toRemove.add(executionListItem);
+//                            }
+//                        }
+//                    }
 
-                    }});
+//                    Platform.runLater(() -> {for(ExecutionListItem executionListItem : toRemove){//TODO make logic when simulation ended
+//                        executionListViewData.remove(executionListItem);
+//                        executionListViewData.add(new ExecutionListItem(executionListItem.getID(), true));
+//
+//                    }});
 
 
                     if(ids.size() != 0) {
