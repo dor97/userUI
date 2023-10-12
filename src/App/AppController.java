@@ -44,7 +44,7 @@ public class AppController implements Initializable {
     @FXML private Button resumeSimulationButton;
     @FXML private Label consistencyLabel;
     @FXML private Label averageLabel;
-    @FXML private Button loadFileButton;
+    //@FXML private Button loadFileButton;
     @FXML private HBox mainHbox;
     @FXML private Tab resultsTab;
     @FXML private Tab newExecutionTab;
@@ -54,9 +54,9 @@ public class AppController implements Initializable {
     @FXML private TabPane tabPane;
     @FXML private Tab DetailsTab;
     @FXML private BorderPane detailsBorderPane;
-    @FXML private TableColumn<QueueManagement, String> statusColumn;
-    @FXML private TableColumn<QueueManagement, Integer> amountColumn;
-    @FXML private TableView<QueueManagement> queueManagementTable;
+    //@FXML private TableColumn<QueueManagement, String> statusColumn;
+    //@FXML private TableColumn<QueueManagement, Integer> amountColumn;
+    //@FXML private TableView<QueueManagement> queueManagementTable;
     @FXML private TreeView<String> resultsTreeView;
     @FXML private Button resultsGraphButton;
     @FXML private Button histogramButton;
@@ -85,7 +85,7 @@ public class AppController implements Initializable {
     @FXML private TreeDetailsController treeDetailsController;
     @FXML private TreeViewController treeViewController;
     @FXML private TreeView<DTOSimulationDetailsItem> detailsTreeView;
-    @FXML private TextField loadedFilePathTextBox;
+    //@FXML private TextField loadedFilePathTextBox;
     @FXML private TextArea exceptionArea;
     @FXML private ChoiceBox<String> simulationNameChoiceBox;
     @FXML private TextField amountToRunfiled;
@@ -118,7 +118,7 @@ public class AppController implements Initializable {
     private ObservableList<EntitiesTable> entitiesTableData = FXCollections.observableArrayList();
     private ObservableList<EntitiesRunTable> entitiesRunTablesData = FXCollections.observableArrayList();
     private ObservableList<ExecutionListItem> executionListViewData = FXCollections.observableArrayList();
-    private ObservableList<QueueManagement> queueManagementData = FXCollections.observableArrayList();
+    //private ObservableList<QueueManagement> queueManagementData = FXCollections.observableArrayList();
     private ObservableList<requestTable> requestTablesData = FXCollections.observableArrayList();
     private ObservableList<entityOriginalSimulationValuesTable> entityOriginValues = FXCollections.observableArrayList();
     private ObservableList<environmentOriginalSimulationValuesTable> environmentOriginValues = FXCollections.observableArrayList();
@@ -178,8 +178,8 @@ public class AppController implements Initializable {
         populationColumn.setCellValueFactory(new PropertyValueFactory<>("population"));
         entityRunColumn.setCellValueFactory(new PropertyValueFactory<>("entityName"));
         populationRunColumn.setCellValueFactory(new PropertyValueFactory<>("population"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+//        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+//        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
         requestIdColumn.setCellValueFactory(new PropertyValueFactory<>("requestId"));
         simulationNameColumn.setCellValueFactory(new PropertyValueFactory<>("simulationName"));
@@ -200,7 +200,7 @@ public class AppController implements Initializable {
         environmentVarTable.setItems(environmentVariableTableData);
         entitiesTable.setItems(entitiesTableData);
         entitiesRunTable.setItems(entitiesRunTablesData);
-        queueManagementTable.setItems(queueManagementData);
+        //queueManagementTable.setItems(queueManagementData);
         executionListView.setItems(executionListViewData);
 
         nextButton.setDisable(true);
@@ -296,13 +296,13 @@ public class AppController implements Initializable {
         }));
         //loadFileButton.setStyle();
 
-        FadeTransition ft = new FadeTransition(Duration.millis(1000));//Duration.INDEFINITE
-        ft.setFromValue(1);
-        ft.setToValue(0.4);
-        ft.setAutoReverse(true);
-        ft.setCycleCount(Animation.INDEFINITE);
-        pt = new ParallelTransition(loadFileButton, ft);
-        pt.play();
+//        FadeTransition ft = new FadeTransition(Duration.millis(1000));//Duration.INDEFINITE
+//        ft.setFromValue(1);
+//        ft.setToValue(0.4);
+//        ft.setAutoReverse(true);
+//        ft.setCycleCount(Animation.INDEFINITE);
+//        pt = new ParallelTransition(loadFileButton, ft);
+//        pt.play();
 
         resultsTreeView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue !=null && newValue.getChildren().isEmpty()){
@@ -326,7 +326,7 @@ public class AppController implements Initializable {
             alert.show();
         }
         updateWorldDifenichan();
-        updateThreadPoolDetailsLoop(queueManagementData);
+        //updateThreadPoolDetailsLoop(queueManagementData);
         updateRequestTableOnLoop();
     }
 
@@ -555,15 +555,15 @@ public class AppController implements Initializable {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
         pt.stop();
-        loadFileButton.setOpacity(1);
+        //loadFileButton.setOpacity(1);
 
         if (selectedFile == null) {
             return;
         }
 
         String absolutePath = selectedFile.getAbsolutePath();
-        loadedFilePathTextBox.setText(absolutePath);
-        loadedFilePathTextBox.setDisable(true);
+//        loadedFilePathTextBox.setText(absolutePath);
+//        loadedFilePathTextBox.setDisable(true);
         System.out.println("get world ");
         try {
             //treeViewController.displayFileDetails(engine, absolutePath, queueManagementData);
@@ -842,10 +842,10 @@ public class AppController implements Initializable {
         resultsTab.setStyle("-fx-background-color: red;");
         newExecutionTab.setStyle("-fx-background-color: orange;");
         mainHbox.setStyle("-fx-background-color: #f1ce47;");
-        loadFileButton.setStyle("-fx-background-color: #ee7d0c;");
+        //loadFileButton.setStyle("-fx-background-color: #ee7d0c;");
         detailsBorderPane.setStyle("-fx-background-color: #efba71;");
-        statusColumn.setStyle("-fx-background-color: #efba71;");
-        amountColumn.setStyle("-fx-background-color: #efba71;");
+//        statusColumn.setStyle("-fx-background-color: #efba71;");
+//        amountColumn.setStyle("-fx-background-color: #efba71;");
         environmentVarColumn.setStyle("-fx-background-color: #fc6b3c;");
         valueColumn.setStyle("-fx-background-color: #fc6b3c;");
         entityColumn.setStyle("-fx-background-color: #fc6b3c;");
@@ -872,7 +872,7 @@ public class AppController implements Initializable {
         stopSimulationButton.setStyle("-fx-background-color: #FF0000FF;");
         clearSimulationButton.setStyle("-fx-background-color: #FF0000FF;");
         graphicDisplayButton.setStyle("-fx-background-color: #efba71;");
-        queueManagementTable.refresh();
+        //queueManagementTable.refresh();
         environmentVarTable.refresh();
         entitiesTable.refresh();
         entitiesRunTable.refresh();
@@ -882,10 +882,10 @@ public class AppController implements Initializable {
         resultsTab.setStyle("-fx-background-color: #0B9CEAFF;");
         newExecutionTab.setStyle("-fx-background-color: #765EE1FF;");
         mainHbox.setStyle("-fx-background-color: #5EE197FF;");
-        loadFileButton.setStyle("-fx-background-color: #094ee3;");
+        //loadFileButton.setStyle("-fx-background-color: #094ee3;");
         detailsBorderPane.setStyle("-fx-background-color: #74EFA9FF;");
-        statusColumn.setStyle("-fx-background-color: #0AD6F1FF;");
-        amountColumn.setStyle("-fx-background-color: #0AD6F1FF;");
+//        statusColumn.setStyle("-fx-background-color: #0AD6F1FF;");
+//        amountColumn.setStyle("-fx-background-color: #0AD6F1FF;");
         environmentVarColumn.setStyle("-fx-background-color: #A777E5FF;");
         valueColumn.setStyle("-fx-background-color: #A777E5FF;");
         entityColumn.setStyle("-fx-background-color: #A777E5FF;");
@@ -912,7 +912,7 @@ public class AppController implements Initializable {
         pauseButton.setStyle("-fx-background-color: #994de3;");
         stopSimulationButton.setStyle("-fx-background-color: #994de3;");
         graphicDisplayButton.setStyle("-fx-background-color: #96b2bd;");
-        queueManagementTable.refresh();
+        //queueManagementTable.refresh();
         environmentVarTable.refresh();
         entitiesTable.refresh();
         entitiesRunTable.refresh();
@@ -968,10 +968,10 @@ public class AppController implements Initializable {
         resultsTab.setStyle(null);
         newExecutionTab.setStyle(null);
         mainHbox.setStyle(null);
-        loadFileButton.setStyle(null);
+        //loadFileButton.setStyle(null);
         detailsBorderPane.setStyle(null);
-        statusColumn.setStyle(null);
-        amountColumn.setStyle(null);
+//        statusColumn.setStyle(null);
+//        amountColumn.setStyle(null);
         environmentVarColumn.setStyle(null);
         valueColumn.setStyle(null);
         entityColumn.setStyle(null);
@@ -998,7 +998,7 @@ public class AppController implements Initializable {
         pauseButton.setStyle(null);
         stopSimulationButton.setStyle(null);
         graphicDisplayButton.setStyle(null);
-        queueManagementTable.refresh();
+        //queueManagementTable.refresh();
         environmentVarTable.refresh();
         entitiesTable.refresh();
         entitiesRunTable.refresh();

@@ -26,17 +26,12 @@
    <top>
       <HBox fx:id="mainHbox" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button id="loadButton" fx:id="loadFileButton" mnemonicParsing="false" onAction="#loadFile" text="Load File" />
-            <TextField fx:id="loadedFilePathTextBox" promptText="Currently Loaded File Path" HBox.hgrow="ALWAYS" />
             <Button id="hotStyle" fx:id="hotStyleButton" mnemonicParsing="false" onAction="#changeStyleHot" text="Hot Style" />
             <Button id="coldStyle" fx:id="coldStyleButton" mnemonicParsing="false" onAction="#changeStyleCold" text="Cold Style" />
-            <Button id="defaultStyleButton" fx:id="defaultStyleButton" mnemonicParsing="false" onAction="#changeToDefaultStyle" text="Default Style" />
-            <TableView fx:id="queueManagementTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0">
-              <columns>
-                <TableColumn id="column" fx:id="statusColumn" prefWidth="169.33336889743805" text="Status" />
-                <TableColumn id="column" fx:id="amountColumn" prefWidth="168.66664123535156" text="Amount" />
-              </columns>
-            </TableView>
+            <Button id="defaultStyleButton" fx:id="defaultStyleButton" mnemonicParsing="false" onAction="#changeToDefaultStyle" text="Default Style">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin></Button>
          </children>
          <opaqueInsets>
             <Insets />
@@ -69,18 +64,82 @@
                            <children>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <ChoiceBox fx:id="simulationNameChoiceBox" prefWidth="150.0" />
-                                    <TextField fx:id="amountToRunfiled" onAction="#amountToRun" />
-                                    <TextField fx:id="tickfiled" onAction="#tick" />
-                                    <TextField fx:id="secfield" onAction="#sec" />
+                                    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="146.0">
+                                       <children>
+                                          <Label text="chose simulation">
+                                             <VBox.margin>
+                                                <Insets left="8.0" top="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <ChoiceBox fx:id="simulationNameChoiceBox" prefHeight="26.0" prefWidth="146.0">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </ChoiceBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox prefHeight="100.0" prefWidth="152.0">
+                                       <children>
+                                          <Label text="amount to run">
+                                             <VBox.margin>
+                                                <Insets left="8.0" top="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <TextField fx:id="amountToRunfiled" onAction="#amountToRun">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox prefHeight="100.0" prefWidth="164.0">
+                                       <children>
+                                          <Label text="ticks">
+                                             <VBox.margin>
+                                                <Insets left="8.0" top="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <TextField fx:id="tickfiled" onAction="#tick">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox prefHeight="100.0" prefWidth="156.0">
+                                       <children>
+                                          <Label text="seconds">
+                                             <VBox.margin>
+                                                <Insets left="8.0" top="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <TextField fx:id="secfield" onAction="#sec">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </VBox>
                                     <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitRequest" text="submit">
                                        <HBox.margin>
-                                          <Insets left="30.0" top="30.0" />
+                                          <Insets left="40.0" top="35.0" />
                                        </HBox.margin>
                                     </Button>
                                  </children>
                               </HBox>
-                              <TableView fx:id="requestTable" prefHeight="254.0" prefWidth="318.0">
+                              <TableView fx:id="requestTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="390.0" prefWidth="1202.0">
                                 <columns>
                                   <TableColumn fx:id="requestIdColumn" prefWidth="75.0" text="requestId" />
                                   <TableColumn fx:id="simulationNameColumn" prefWidth="118.39999389648438" text="simulationName" />
@@ -244,6 +303,9 @@
                </content>
             </Tab>
         </tabs>
+         <BorderPane.margin>
+            <Insets top="15.0" />
+         </BorderPane.margin>
       </TabPane>
    </center>
    <cursor>
