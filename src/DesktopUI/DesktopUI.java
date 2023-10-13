@@ -1,8 +1,10 @@
 package DesktopUI;
 
 import App.AppController;
+import App.logInScreen;
 import TreeDetails.TreeDetailsController;
 import TreeView.TreeViewController;
+import httpClient.clientCommunication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,10 +17,13 @@ import java.net.URL;
 
 public class DesktopUI extends Application {
     private static AppController appController;
+    public static clientCommunication communication = new clientCommunication();
+    private static logInScreen logInScreen;
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         FXMLLoader fxmlLoader = new FXMLLoader();
+
+
         URL url = getClass().getResource("/TreeView/TreeView.fxml");
         fxmlLoader.setLocation(url);
         BorderPane treeViewComponent = fxmlLoader.load(url.openStream());
@@ -29,6 +34,12 @@ public class DesktopUI extends Application {
         fxmlLoader.setLocation(url);
         BorderPane treeDetailsComponent = fxmlLoader.load(url.openStream());
         TreeDetailsController treeDetailsController = fxmlLoader.getController();
+
+        fxmlLoader = new FXMLLoader();
+        URL logInFXML = getClass().getResource("/resources/logInPage.fxml");
+        fxmlLoader.setLocation(logInFXML);
+        Parent logInRoot = fxmlLoader.load();
+        logInScreen = fxmlLoader.getController();
 
         fxmlLoader = new FXMLLoader();
         URL mainFXML = getClass().getResource("/resources/javaFXproject.fxml");
@@ -46,7 +57,10 @@ public class DesktopUI extends Application {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
         Scene scene = new Scene(scrollPane);
-        primaryStage.setScene(scene);
+        Scene logInScene = new Scene(logInRoot);
+        logInScreen.setAppScene(scene);
+        logInScreen.setPrimaryStage(primaryStage);
+        primaryStage.setScene(logInScene);
         appController.setStage(primaryStage);
         primaryStage.setTitle("Predictions");
 

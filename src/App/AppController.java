@@ -1,5 +1,6 @@
 package App;
 
+import DesktopUI.DesktopUI;
 import httpClient.clientCommunication;
 import httpClient.clientCommunication.*;
 import DTO.*;
@@ -169,7 +170,7 @@ public class AppController implements Initializable {
             treeDetailsController.setMainController(this);
             treeViewController.setAlert(alert);
         }
-        communication = new clientCommunication();
+        communication = DesktopUI.communication;
         resultsGraphButton.setDisable(true);
         histogramButton.setDisable(true);
         environmentVarColumn.setCellValueFactory(new PropertyValueFactory<>("envVarNameColumn"));
