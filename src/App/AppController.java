@@ -55,6 +55,7 @@ public class AppController implements Initializable {
     @FXML private TabPane tabPane;
     @FXML private Tab DetailsTab;
     @FXML private BorderPane detailsBorderPane;
+    @FXML private CheckBox noTimeAndTicksLimit;
     //@FXML private TableColumn<QueueManagement, String> statusColumn;
     //@FXML private TableColumn<QueueManagement, Integer> amountColumn;
     //@FXML private TableView<QueueManagement> queueManagementTable;
@@ -1079,25 +1080,37 @@ public class AppController implements Initializable {
                 alert.setContentText("must enter number to amount to run");
                 alert.show();
             }
-            try {
-                if(tickfiled.getText().equals("")){
-                    ticks = null;
-                }else {
-                    ticks = Integer.parseInt(tickfiled.getText());
+            if(noTimeAndTicksLimit.isSelected()){
+                ticks = null;
+                sec = null;
+            }else {
+                try {
+                    if (tickfiled.getText().equals("")) {
+                        ticks = null;
+                    } else {
+                        ticks = Integer.parseInt(tickfiled.getText());
+                    }
+                } catch (Exception e) {
+                    alert.setContentText("can only enter numbers to ticks or live empty");
+                    alert.show();
+                    return;
                 }
-            }catch (Exception e){
-                alert.setContentText("can only enter numbers to ticks or live empty");
-                alert.show();
-            }
-            try{
-                if(secfield.getText().equals("")){
-                    sec = null;
-                }else {
-                    sec = Integer.parseInt(secfield.getText());
+                try {
+                    if (secfield.getText().equals("")) {
+                        sec = null;
+                    } else {
+                        sec = Integer.parseInt(secfield.getText());
+                    }
+                } catch (Exception e) {
+                    alert.setContentText("can only enter numbers to ticks or live empty");
+                    alert.show();
+                    return;
                 }
-            }catch (Exception e){
-                alert.setContentText("can only enter numbers to ticks or live empty");
-                alert.show();
+                if(ticks == null && sec == null){
+                    alert.setContentText("if user termination only check box is not selected you must give a value to ticks or seconds");
+                    alert.show();
+                    return;
+                }
             }
             communication._askToRunASimulation(simulationChosenName, amountToRun, ticks, sec);
         }catch (Exception e){
