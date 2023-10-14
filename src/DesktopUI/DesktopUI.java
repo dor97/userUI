@@ -2,6 +2,7 @@ package DesktopUI;
 
 import App.AppController;
 import App.logInScreen;
+import App.simulationValueController;
 import TreeDetails.TreeDetailsController;
 import TreeView.TreeViewController;
 import httpClient.clientCommunication;
@@ -16,13 +17,13 @@ import javafx.stage.Stage;
 import java.net.URL;
 
 public class DesktopUI extends Application {
-    private static AppController appController;
+    public static AppController appController;
     public static clientCommunication communication = new clientCommunication();
     private static logInScreen logInScreen;
+    private simulationValueController simulationValueController;
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader();
-
 
         URL url = getClass().getResource("/TreeView/TreeView.fxml");
         fxmlLoader.setLocation(url);
@@ -34,6 +35,12 @@ public class DesktopUI extends Application {
         fxmlLoader.setLocation(url);
         BorderPane treeDetailsComponent = fxmlLoader.load(url.openStream());
         TreeDetailsController treeDetailsController = fxmlLoader.getController();
+
+        fxmlLoader = new FXMLLoader();
+        URL showDetailsFXML = getClass().getResource("/resources/simulationValue.fxml");
+        fxmlLoader.setLocation(showDetailsFXML);
+        Parent showDetailsRoot = fxmlLoader.load();
+        simulationValueController = fxmlLoader.getController();
 
         fxmlLoader = new FXMLLoader();
         URL logInFXML = getClass().getResource("/resources/logInPage.fxml");
@@ -56,6 +63,7 @@ public class DesktopUI extends Application {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
+        Scene simulationDetailsScene = new Scene(showDetailsRoot);
         Scene scene = new Scene(scrollPane);
         Scene logInScene = new Scene(logInRoot);
         logInScreen.setAppScene(scene);
@@ -63,6 +71,12 @@ public class DesktopUI extends Application {
         primaryStage.setScene(logInScene);
         appController.setStage(primaryStage);
         primaryStage.setTitle("Predictions");
+        appController.setSimulationDetailsScene(simulationDetailsScene);
+        logInScreen.setUserNameLabel(appController.getUserNameLabel());
+        appController.setStage(primaryStage);
+        appController.setAppControllerScene(scene);
+        simulationValueController.setAppControllerScene(scene);
+        appController.setSimulationValueController(simulationValueController);
 
         primaryStage.show();
     }

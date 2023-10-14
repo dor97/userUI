@@ -108,10 +108,10 @@ public class AppController implements Initializable {
     @FXML private TableView<environmentOriginalSimulationValuesTable> environmentOriginValueTable;
     @FXML private TableColumn<environmentOriginalSimulationValuesTable, String> environmentOriginColumn;
     @FXML private TableColumn<environmentOriginalSimulationValuesTable, String> valueOriginColumn;
+    @FXML private Label userNameLabel;
 
-
-
-    private simulationValue originalSimulationValue;
+    private simulationValueController simulationValueController;
+    private Scene simulationDetailsScene;
     private Map<Integer, Integer> requestIdToIndex = new HashMap<>();
     private Stage primaryStage;
     private Stage graphicDisplayStage;
@@ -125,6 +125,10 @@ public class AppController implements Initializable {
     private ObservableList<entityOriginalSimulationValuesTable> entityOriginValues = FXCollections.observableArrayList();
     private ObservableList<environmentOriginalSimulationValuesTable> environmentOriginValues = FXCollections.observableArrayList();
 
+    private Map<String, Integer> entityMap;
+    private Map<String, String> environmentVariableMap;
+    private DTOResultOfPrepareSimulation resultOfPrepareSimulation;
+    private Scene appControllerScene;
     private int simulationID;
     private myTask newTask = null;
     private Integer lastSimulationNum = 0;
@@ -395,6 +399,19 @@ public class AppController implements Initializable {
 
     }
 
+    public void setSimulationDetailsScene(Scene simulationDetailsScene){
+        this.simulationDetailsScene = simulationDetailsScene;
+    }
+
+    public void setAppControllerScene(Scene appControllerScene) {
+        this.appControllerScene = appControllerScene;
+    }
+
+
+    public Label getUserNameLabel(){
+        return userNameLabel;
+    }
+
     public void stopGettingDataUsingTask(myTask task){
         synchronized (task) {
             taskThread.interrupt();
@@ -435,6 +452,9 @@ public class AppController implements Initializable {
     private void displaySimulationResults() {
 
         fillResultsTreeView();
+    }
+    public void setSimulationValueController(simulationValueController simulationValueController){
+        this.simulationValueController = simulationValueController;
     }
 
     private void setConsistencyValue(String entity, String property) {
@@ -616,46 +636,90 @@ public class AppController implements Initializable {
 
     public void startSimulation(ActionEvent actionEvent) {
         try{
-//            for (EnvironmentVariableTable environmentVariable : environmentVariableTableData){
-//                if (!environmentVariable.getValue().getText().isEmpty()){
-//                    try{
-//                        engine.addEnvironmentVariableValue(environmentVariable.getEnvVarNameNoType(), environmentVariable.getValue().getText());
-//                    }catch (Exception e){
-//                        alert.setContentText(e.getMessage());
-//                        alert.show();
-//                        System.out.println(e.getMessage());
-//                        return;
-//                    }
-//                }
-//            }
-//
-//            for (EntitiesTable entity : entitiesTableData){
-//                if (!entity.getPopulation().getText().equals("0")){
-//                    try{
-//                        engine.addPopulationToEntity(entity.getEntityName(), Integer.parseInt(entity.getPopulation().getText()));
-//                    }catch (Exception e){
-//                        alert.setContentText(e.getMessage());
-//                        alert.show();
-//                        System.out.println(e.getMessage());
-//                        return;
-//                    }
-//                }
-//            }//TODO change
             Integer requestId = communication.getRequestIdChosen();
             if(requestId == null){
                 return;
             }
-            Map<String, String> environmentVariableMap = environmentVariableTableData.stream().collect(Collectors.toMap(environmentVariable -> environmentVariable.getEnvVarNameNoType(), environmentVariable -> environmentVariable.getValue().getText()));
-            Map<String, Integer> entityMap = entitiesTableData.stream().collect(Collectors.toMap(entity -> entity.getEntityName(), entity -> Integer.parseInt(entity.getPopulation().getText())));
-            DTOResultOfPrepareSimulation resultOfPrepareSimulation = communication.prepareSimulation(requestId, communication.getUserName(), environmentVariableMap, entityMap);
+            environmentVariableMap = environmentVariableTableData.stream().collect(Collectors.toMap(environmentVariable -> environmentVariable.getEnvVarNameNoType(), environmentVariable -> environmentVariable.getValue().getText()));
+            entityMap = entitiesTableData.stream().collect(Collectors.toMap(entity -> entity.getEntityName(), entity -> Integer.parseInt((entity.getPopulation().getText().equals("") ? "0" : entity.getPopulation().getText()))));
+            resultOfPrepareSimulation = communication.prepareSimulation(requestId, communication.getUserName(), environmentVariableMap, entityMap);
+            simulationValueController.fillTables(entityMap, resultOfPrepareSimulation);
+            primaryStage.setScene(simulationDetailsScene);
+
+//            DTOSimulationId simulationId = communication.startSimulation();
+//            entityOriginalValuesMap.put(simulationId.getSimulationId(), entityMap.entrySet().stream().map(entry -> new entityOriginalSimulationValuesTable(entry.getKey(), entry.getValue())).collect(Collectors.toList()));
+//            environmentOriginalValuesMap.put(simulationId.getSimulationId(), resultOfPrepareSimulation.getEnvironmentVariablesValuesList().stream().map(DTOEnvironment -> new environmentOriginalSimulationValuesTable(DTOEnvironment.getName(), DTOEnvironment.getValue().toString())).collect(Collectors.toList()));
+//
+//            //communication.setChosenSimulationId(simulationId.getSimulationId());
+//            simulationID = simulationId.getSimulationId();
+////            engine.setSimulation();
+////            simulationID = engine.activeSimulation(new myTask());
+//            executionListViewData.add(new ExecutionListItem(simulationID));
+//            if(isFirstSimulationForFile){
+//                isFirstSimulationForFile = false;
+//                //engine.updateNewlyFinishedSimulationInLoop(executionListViewData);
+//                Thread thread = new Thread(() -> {  while(true)
+//                {List<Integer> ids = communication.getNewlyFinishedSimulation(communication.getPrevIndexForFinishedSimulation());
+//                    //ObservableList<ExecutionListItem> toRemove = FXCollections.observableArrayList();
+//                    for(Integer id : ids){
+//                        for(ExecutionListItem executionListItem : executionListViewData){
+//                            if(executionListItem.getID().equals(id)){
+//                                executionListItem.setToFinished();
+//                            }
+//                        }
+//                    }
+//                    Platform.runLater(() -> executionListView.refresh());
+//
+////                    for(Integer id : ids){
+////                        for(ExecutionListItem executionListItem : executionListViewData){
+////                            if(executionListItem.getID().equals(id)){
+////                                toRemove.add(executionListItem);
+////                            }
+////                        }
+////                    }
+//
+////                    Platform.runLater(() -> {for(ExecutionListItem executionListItem : toRemove){//TODO make logic when simulation ended
+////                        executionListViewData.remove(executionListItem);
+////                        executionListViewData.add(new ExecutionListItem(executionListItem.getID(), true));
+////
+////                    }});
+//
+//
+//                    if(ids.size() != 0) {
+//                        StringBuilder result = new StringBuilder();
+//                        result.append("The following simulations are done: ");
+//                        ids.stream().forEach(id -> result.append(id.toString() + "  "));
+//                        Platform.runLater(() -> { Alert fines = new Alert(Alert.AlertType.INFORMATION);
+//                                                  fines.setTitle("simulation/s finished");
+//
+//                                                  //fines.setHeight(200);
+//                                                  fines.setContentText(result.toString());
+//                                                  fines.show();});
+//                    }
+//                    try{Thread.sleep(200);}catch (InterruptedException e){}}
+//                });
+//                thread.setDaemon(true);
+//                thread.start();
+//            }
+
+        }catch (Exception e){
+            alert.setContentText(e.getMessage());
+            alert.show();
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void startASimulation(){
+        try{
+            primaryStage.setScene(appControllerScene);
             DTOSimulationId simulationId = communication.startSimulation();
             entityOriginalValuesMap.put(simulationId.getSimulationId(), entityMap.entrySet().stream().map(entry -> new entityOriginalSimulationValuesTable(entry.getKey(), entry.getValue())).collect(Collectors.toList()));
             environmentOriginalValuesMap.put(simulationId.getSimulationId(), resultOfPrepareSimulation.getEnvironmentVariablesValuesList().stream().map(DTOEnvironment -> new environmentOriginalSimulationValuesTable(DTOEnvironment.getName(), DTOEnvironment.getValue().toString())).collect(Collectors.toList()));
 
             //communication.setChosenSimulationId(simulationId.getSimulationId());
             simulationID = simulationId.getSimulationId();
-//            engine.setSimulation();
-//            simulationID = engine.activeSimulation(new myTask());
+        //            engine.setSimulation();
+        //            simulationID = engine.activeSimulation(new myTask());
             executionListViewData.add(new ExecutionListItem(simulationID));
             if(isFirstSimulationForFile){
                 isFirstSimulationForFile = false;
@@ -672,19 +736,19 @@ public class AppController implements Initializable {
                     }
                     Platform.runLater(() -> executionListView.refresh());
 
-//                    for(Integer id : ids){
-//                        for(ExecutionListItem executionListItem : executionListViewData){
-//                            if(executionListItem.getID().equals(id)){
-//                                toRemove.add(executionListItem);
-//                            }
-//                        }
-//                    }
+        //                    for(Integer id : ids){
+        //                        for(ExecutionListItem executionListItem : executionListViewData){
+        //                            if(executionListItem.getID().equals(id)){
+        //                                toRemove.add(executionListItem);
+        //                            }
+        //                        }
+        //                    }
 
-//                    Platform.runLater(() -> {for(ExecutionListItem executionListItem : toRemove){//TODO make logic when simulation ended
-//                        executionListViewData.remove(executionListItem);
-//                        executionListViewData.add(new ExecutionListItem(executionListItem.getID(), true));
-//
-//                    }});
+        //                    Platform.runLater(() -> {for(ExecutionListItem executionListItem : toRemove){//TODO make logic when simulation ended
+        //                        executionListViewData.remove(executionListItem);
+        //                        executionListViewData.add(new ExecutionListItem(executionListItem.getID(), true));
+        //
+        //                    }});
 
 
                     if(ids.size() != 0) {
@@ -692,11 +756,11 @@ public class AppController implements Initializable {
                         result.append("The following simulations are done: ");
                         ids.stream().forEach(id -> result.append(id.toString() + "  "));
                         Platform.runLater(() -> { Alert fines = new Alert(Alert.AlertType.INFORMATION);
-                                                  fines.setTitle("simulation/s finished");
+                            fines.setTitle("simulation/s finished");
 
-                                                  //fines.setHeight(200);
-                                                  fines.setContentText(result.toString());
-                                                  fines.show();});
+                            //fines.setHeight(200);
+                            fines.setContentText(result.toString());
+                            fines.show();});
                     }
                     try{Thread.sleep(200);}catch (InterruptedException e){}}
                 });

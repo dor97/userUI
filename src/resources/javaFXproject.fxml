@@ -27,7 +27,16 @@
    <top>
       <HBox fx:id="mainHbox" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button id="hotStyle" fx:id="hotStyleButton" mnemonicParsing="false" onAction="#changeStyleHot" text="Hot Style" />
+            <Label text="Name:" />
+            <Label fx:id="userNameLabel">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Button id="hotStyle" fx:id="hotStyleButton" mnemonicParsing="false" onAction="#changeStyleHot" text="Hot Style">
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin></Button>
             <Button id="coldStyle" fx:id="coldStyleButton" mnemonicParsing="false" onAction="#changeStyleCold" text="Cold Style" />
             <Button id="defaultStyleButton" fx:id="defaultStyleButton" mnemonicParsing="false" onAction="#changeToDefaultStyle" text="Default Style">
                <HBox.margin>
@@ -133,7 +142,7 @@
                                           <Insets left="5.0" />
                                        </HBox.margin>
                                     </VBox>
-                                    <CheckBox fx:id="noTimeAndTicksLimit" mnemonicParsing="false" text="CheckBox">
+                                    <CheckBox fx:id="noTimeAndTicksLimit" mnemonicParsing="false" text="user termination only">
                                        <HBox.margin>
                                           <Insets left="20.0" top="35.0" />
                                        </HBox.margin>

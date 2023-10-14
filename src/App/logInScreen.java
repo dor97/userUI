@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -21,12 +22,17 @@ public class logInScreen implements Initializable {
     @FXML
     private TextField userNameTextField;
     private Alert alert = new Alert(Alert.AlertType.ERROR);
+    private Label userNameLabel;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         alert.setTitle("Error");
         communication = DesktopUI.communication;
+    }
+
+    public void setUserNameLabel(Label userNameLabel){
+        this.userNameLabel = userNameLabel;
     }
 
     public void setAppScene(Scene appScene){
@@ -51,6 +57,9 @@ public class logInScreen implements Initializable {
                 alert.setContentText("user name all ready exist");
                 alert.show();
                 return;
+            }
+            if(userNameLabel != null){
+                userNameLabel.setText(communication.getUserName());
             }
             primaryStage.setScene(appScene);
         }catch (Exception e){
