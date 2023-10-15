@@ -81,5 +81,17 @@ public class simulationValueController  implements Initializable {
 
     }
 
+    @FXML
+    void cancelButton(ActionEvent event) {
+        environmentVariableTableData.clear();
+        entityPopulationTableData.clear();
+        valueTable.refresh();
+        populationTable.refresh();
+        appController.cancelSimulationButton();
+
+
+    }
+
+
 
 }

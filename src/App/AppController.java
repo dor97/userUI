@@ -709,6 +709,10 @@ public class AppController implements Initializable {
         }
     }
 
+    public void cancelSimulationButton(){
+        primaryStage.setScene(appControllerScene);
+    }
+
     public void startASimulation(){
         try{
             primaryStage.setScene(appControllerScene);
