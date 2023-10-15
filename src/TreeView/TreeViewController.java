@@ -78,13 +78,13 @@ public class TreeViewController implements Initializable {
         TreeItem<DTOSimulationDetailsItem> ruleItem = new TreeItem<>(new DTOSimulationDetailsItem("Rules"));
         TreeItem<DTOSimulationDetailsItem> envItem = new TreeItem<>(new DTOSimulationDetailsItem("Environment Variables"));
         TreeItem<DTOSimulationDetailsItem> gridItem = new TreeItem<>(new DTOSimulationDetailsItem("Grid"));
-        TreeItem<DTOSimulationDetailsItem> terminationItem = new TreeItem<>(new DTOSimulationDetailsItem("Termination"));
+        //TreeItem<DTOSimulationDetailsItem> terminationItem = new TreeItem<>(new DTOSimulationDetailsItem("Termination"));
 
         rootItem.getChildren().add(getEntities(details, entityItem));
         rootItem.getChildren().add(getRules(details, ruleItem));
         rootItem.getChildren().add(getEnvVar(details, envItem));
         rootItem.getChildren().add(getGrid(details,gridItem));
-        rootItem.getChildren().add(getTermination(details,terminationItem));
+        //rootItem.getChildren().add(getTermination(details,terminationItem));
 
         return rootItem;
     }
