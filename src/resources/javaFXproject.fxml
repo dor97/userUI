@@ -156,12 +156,12 @@
                               </HBox>
                               <TableView fx:id="requestTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="390.0" prefWidth="1202.0">
                                 <columns>
-                                  <TableColumn fx:id="requestIdColumn" prefWidth="75.0" text="requestId" />
-                                  <TableColumn fx:id="simulationNameColumn" prefWidth="118.39999389648438" text="simulationName" />
-                                    <TableColumn fx:id="amountToRunColumn" prefWidth="104.79997253417969" text="amount" />
-                                    <TableColumn fx:id="requestStatusColumn" minWidth="2.4000244140625" prefWidth="108.800048828125" text="status" />
-                                    <TableColumn fx:id="currentlyRunningSimulationColumn" minWidth="6.4000244140625" prefWidth="127.199951171875" text="running" />
-                                    <TableColumn fx:id="doneRunningColumn" prefWidth="131.20001220703125" text="done" />
+                                  <TableColumn fx:id="requestIdColumn" prefWidth="98.39999085664749" text="requestId" />
+                                  <TableColumn fx:id="simulationNameColumn" prefWidth="196.00001525878906" text="simulationName" />
+                                    <TableColumn fx:id="amountToRunColumn" prefWidth="120.800048828125" text="amount" />
+                                    <TableColumn fx:id="requestStatusColumn" minWidth="2.4000244140625" prefWidth="138.39996337890625" text="status" />
+                                    <TableColumn fx:id="currentlyRunningSimulationColumn" minWidth="6.4000244140625" prefWidth="136.0" text="running" />
+                                    <TableColumn fx:id="doneRunningColumn" prefWidth="143.20001220703125" text="done" />
                                 </columns>
                               </TableView>
                               <Button fx:id="executeButton" mnemonicParsing="false" onAction="#executeSimulation" text="execute" />
@@ -257,9 +257,9 @@
                                 </rowConstraints>
                                  <children>
                                     <Button fx:id="rerunButton" mnemonicParsing="false" onAction="#rerun" text="Rerun" />
-                                    <Label fx:id="ticksLabel" text="Ticks:" GridPane.rowIndex="2" />
+                                    <Label fx:id="ticksLabel" minHeight="-Infinity" minWidth="-Infinity" text="Ticks:" GridPane.rowIndex="2" />
                                     <Label fx:id="ticksValueLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label fx:id="secondsLabel" text="Seconds:" GridPane.rowIndex="3" />
+                                    <Label fx:id="secondsLabel" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="61.0" text="Seconds:" GridPane.rowIndex="3" />
                                     <Label fx:id="secondsValueLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Button id="pause" fx:id="stopSimulationButton" mnemonicParsing="false" onAction="#stopSimulation" text="Stop" GridPane.rowIndex="1" />
                                     <Button fx:id="resumeSimulationButton" mnemonicParsing="false" onAction="#resumeSimulation" text="Resume" GridPane.columnIndex="1" GridPane.rowIndex="1">

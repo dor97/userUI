@@ -221,17 +221,18 @@ public class AppController implements Initializable {
 
 
         executionListView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                if (entityOriginalValuesMap.containsKey(newValue.getID())) {
+                    entityOriginValues.clear();
+                    entityOriginValues.addAll(entityOriginalValuesMap.get(newValue.getID()));
+                    entityOriginValueTable.refresh();
+                }
 
-            if(entityOriginalValuesMap.containsKey(newValue.getID())) {
-                entityOriginValues.clear();
-                entityOriginValues.addAll(entityOriginalValuesMap.get(newValue.getID()));
-                entityOriginValueTable.refresh();
-            }
-
-            if (environmentOriginalValuesMap.containsKey(newValue.getID())){
-                environmentOriginValues.clear();
-                environmentOriginValues.addAll(environmentOriginalValuesMap.get(newValue.getID()));
-                environmentOriginValueTable.refresh();
+                if (environmentOriginalValuesMap.containsKey(newValue.getID())) {
+                    environmentOriginValues.clear();
+                    environmentOriginValues.addAll(environmentOriginalValuesMap.get(newValue.getID()));
+                    environmentOriginValueTable.refresh();
+                }
             }
 
 
